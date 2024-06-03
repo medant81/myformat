@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"os"
+	"sort"
 )
 
 type patient struct {
@@ -35,6 +36,10 @@ func fileDecode(fileIn string) (*patients, error) {
 		}
 		res.List = append(res.List, a)
 	}
+
+	sort.Slice(res.List, func(i, j int) bool {
+		return res.List[i].Age < res.List[j].Age
+	})
 
 	return &res, nil
 }

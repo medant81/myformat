@@ -3,6 +3,7 @@ package myformat
 import (
 	"encoding/json"
 	"os"
+	"sort"
 )
 
 type animal struct {
@@ -19,7 +20,7 @@ func fileDecode(fileIn string) ([]animal, error) {
 	}
 	defer f.Close()
 
-	res := make([]animal, 0, 4)
+	res := make([]animal, 0, 2)
 	dec := json.NewDecoder(f)
 	for dec.More() {
 		var a animal
@@ -29,6 +30,10 @@ func fileDecode(fileIn string) ([]animal, error) {
 		}
 		res = append(res, a)
 	}
+
+	sort.Slice(res, func(i, j int) bool {
+		return res[i].Age < res[j].Age
+	})
 
 	return res, nil
 }
